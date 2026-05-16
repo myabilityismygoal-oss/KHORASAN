@@ -27,7 +27,53 @@ const BusinessRegistration: React.FC<Props> = ({ user, profile }) => {
     isOnline: profile?.businessProfile?.isOnline ?? true,
     isPhysical: profile?.businessProfile?.isPhysical ?? false,
     logo: profile?.businessProfile?.logo || '',
+    photos: profile?.businessProfile?.photos || [],
+    videos: profile?.businessProfile?.videos || [],
   });
+
+  // Photo Management
+  const [newPhotoUrl, setNewPhotoUrl] = useState('');
+  const [newVideoUrl, setNewVideoUrl] = useState('');
+
+  useEffect(() => {
+    if (profile?.businessProfile) {
+      setFormData({
+        name: profile.businessProfile.name || '',
+        description: profile.businessProfile.description || '',
+        address: profile.businessProfile.address || '',
+        whatsapp: profile.businessProfile.whatsapp || '',
+        category: profile.businessProfile.category || 'General',
+        website: profile.businessProfile.website || '',
+        isOnline: profile.businessProfile.isOnline ?? true,
+        isPhysical: profile.businessProfile.isPhysical ?? false,
+        logo: profile.businessProfile.logo || '',
+        photos: profile.businessProfile.photos || [],
+        videos: profile.businessProfile.videos || [],
+      });
+    }
+  }, [profile]);
+
+  const addPhoto = () => {
+    if (newPhotoUrl.trim()) {
+      setFormData(prev => ({ ...prev, photos: [...prev.photos, newPhotoUrl.trim()] }));
+      setNewPhotoUrl('');
+    }
+  };
+
+  const removePhoto = (index: number) => {
+    setFormData(prev => ({ ...prev, photos: prev.photos.filter((_, i) => i !== index) }));
+  };
+
+  const addVideo = () => {
+    if (newVideoUrl.trim()) {
+      setFormData(prev => ({ ...prev, videos: [...prev.videos, newVideoUrl.trim()] }));
+      setNewVideoUrl('');
+    }
+  };
+
+  const removeVideo = (index: number) => {
+    setFormData(prev => ({ ...prev, videos: prev.videos.filter((_, i) => i !== index) }));
+  };
 
   // Product Management State
   const [products, setProducts] = useState<Product[]>([]);
@@ -74,8 +120,6 @@ const BusinessRegistration: React.FC<Props> = ({ user, profile }) => {
     try {
       const businessData = {
         ...formData,
-        photos: profile?.businessProfile?.photos || [],
-        videos: profile?.businessProfile?.videos || [],
         rating: profile?.businessProfile?.rating || 5.0,
       };
 
@@ -278,6 +322,83 @@ const BusinessRegistration: React.FC<Props> = ({ user, profile }) => {
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-blue-500 transition-all"
                 placeholder="آدرس دقیق دفتر یا فروشگاه"
               />
+            </div>
+
+            {/* Media Management */}
+            <div className="space-y-6 pt-4 border-t border-gray-100">
+              <div className="space-y-4">
+                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                  <Camera size={18} className="text-pink-500" />
+                  تصاویر گالری پروفایل
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={newPhotoUrl}
+                    onChange={(e) => setNewPhotoUrl(e.target.value)}
+                    className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-blue-500 transition-all text-xs"
+                    placeholder="لینک تصویر جدید..."
+                  />
+                  <button
+                    type="button"
+                    onClick={addPhoto}
+                    className="px-4 py-2 bg-pink-500 text-white rounded-xl font-bold text-xs hover:bg-pink-600 transition-all"
+                  >
+                    افزودن
+                  </button>
+                </div>
+                <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
+                  {formData.photos.map((photo, idx) => (
+                    <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 group">
+                      <img src={photo} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(idx)}
+                        className="absolute top-1 right-1 p-1 bg-white/80 rounded-md text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <Plus size={14} className="rotate-45" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                  <Video size={18} className="text-red-500" />
+                  ویدیوهای معرفی (لینک مستقیم)
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={newVideoUrl}
+                    onChange={(e) => setNewVideoUrl(e.target.value)}
+                    className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-blue-500 transition-all text-xs"
+                    placeholder="لینک ویدیو جدید..."
+                  />
+                  <button
+                    type="button"
+                    onClick={addVideo}
+                    className="px-4 py-2 bg-red-500 text-white rounded-xl font-bold text-xs hover:bg-red-600 transition-all"
+                  >
+                    افزودن
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {formData.videos.map((video, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded-xl border border-gray-100 border-dashed">
+                      <span className="text-[10px] text-gray-500 truncate max-w-[200px]">{video}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeVideo(idx)}
+                        className="text-red-500 hover:bg-red-50 p-1 rounded-lg transition-all"
+                      >
+                        <Plus size={16} className="rotate-45" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Representation Type */}
