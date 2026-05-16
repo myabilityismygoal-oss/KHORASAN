@@ -1,0 +1,394 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account information, token balance, and profiles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "tokenBalance": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin", "business"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "whatsapp": { "type": "string" },
+        "bio": { "type": "string" },
+        "educationProfile": {
+          "type": "object",
+          "properties": {
+            "enrolledCourses": { "type": "array", "items": { "type": "string" } },
+            "completedLessons": { "type": "array", "items": { "type": "string" } },
+            "bio": { "type": "string" },
+            "interests": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "businessProfile": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "logo": { "type": "string" },
+            "description": { "type": "string" },
+            "address": { "type": "string" },
+            "whatsapp": { "type": "string" },
+            "isOnline": { "type": "boolean" },
+            "isPhysical": { "type": "boolean" },
+            "photos": { "type": "array", "items": { "type": "string" } },
+            "videos": { "type": "array", "items": { "type": "string" } },
+            "category": { "type": "string" },
+            "website": { "type": "string" },
+            "rating": { "type": "number" }
+          }
+        }
+      },
+      "required": ["uid", "email", "tokenBalance"]
+    },
+    "ArtPiece": {
+      "title": "Art Piece",
+      "description": "An artwork item in the gallery.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "artist": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "description": { "type": "string" },
+        "likes": { "type": "number" },
+        "category": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "artist", "imageUrl", "category"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "User review for a business.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "businessId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "rating", "comment", "businessId"]
+    },
+    "BusinessProfile": {
+      "title": "Business Profile",
+      "description": "Information about a business entity.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "brandIcon": { "type": "string" },
+        "address": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "photos": { "type": "array", "items": { "type": "string" } },
+        "videos": { "type": "array", "items": { "type": "string" } },
+        "qualityRating": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "category"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Item for sale in the shop.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "category": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
+        "sizes": { "type": "array", "items": { "type": "string" } },
+        "stock": { "type": "number" },
+        "likes": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "price"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "Online educational course.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "instructorId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["instructorId", "title", "price"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "Digital book in the library.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "description": { "type": "string" },
+        "coverImage": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["title", "author"]
+    },
+    "Riddle": {
+      "title": "Riddle",
+      "description": "Community riddle or puzzle.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "authorId": { "type": "string" },
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "isAnswered": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "question"]
+    },
+    "WordBankItem": {
+      "title": "Word Bank Item",
+      "description": "Vocabulary word with definition.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "word": { "type": "string" },
+        "definition": { "type": "string" },
+        "example": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["word", "definition"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Social media post or story.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "authorId": { "type": "string" },
+        "content": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
+        "likes": { "type": "array", "items": { "type": "string" } },
+        "isStory": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "content"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Internal token transaction record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fromId": { "type": "string" },
+        "toId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["transfer", "reward", "purchase"] },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fromId", "toId", "amount", "type", "createdAt"]
+    },
+    "APKFile": {
+      "title": "APK File",
+      "description": "Metadata for an uploaded APK application.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "packageName": { "type": "string" },
+        "description": { "type": "string" },
+        "currentVersionId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "packageName"]
+    },
+    "APKVersion": {
+      "title": "APK Version",
+      "description": "Specific version of an uploaded APK.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "apkFileId": { "type": "string" },
+        "versionCode": { "type": "number" },
+        "versionName": { "type": "string" },
+        "downloadUrl": { "type": "string" },
+        "size": { "type": "number" },
+        "changelog": { "type": "string" },
+        "uploadedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["apkFileId", "versionCode", "versionName", "downloadUrl"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Personal note for a user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "content"]
+    },
+    "CultureArticle": {
+      "title": "Culture Article",
+      "description": "Article about culture, civilization, or environment.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "category": { "type": "string", "enum": ["culture", "civilization", "environment"] },
+        "authorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "category"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "Community question for Q&A section.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "isAnswered": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "content"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer order for products.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "businessId": { "type": "string" },
+        "items": { 
+          "type": "array", 
+          "items": { 
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "quantity": { "type": "number" },
+              "size": { "type": "string" }
+            }
+          }
+        },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"] },
+        "shippingAddress": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerId", "businessId", "items", "totalAmount", "status", "shippingAddress", "phoneNumber"]
+    },
+    "ProductAlert": {
+      "title": "Product Alert",
+      "description": "User subscription to product availability and price changes.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productId": { "type": "string" },
+        "type": { "type": "string", "enum": ["price", "stock", "both"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productId", "type"]
+    }
+  },
+  "firestore": {
+    "/productAlerts/{alertId}": {
+      "schema": "ProductAlert",
+      "description": "User subscriptions to product updates."
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/businesses/{businessId}": {
+      "schema": "BusinessProfile",
+      "description": "Business profile documents."
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Products for sale."
+    },
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Educational courses."
+    },
+    "/books/{bookId}": {
+      "schema": "Book",
+      "description": "Library books."
+    },
+    "/riddles/{riddleId}": {
+      "schema": "Riddle",
+      "description": "Community riddles."
+    },
+    "/wordbank/{wordId}": {
+      "schema": "WordBankItem",
+      "description": "Vocabulary items."
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Social posts and stories."
+    },
+    "/art/{artId}": {
+      "schema": "ArtPiece",
+      "description": "Art gallery items."
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Business reviews."
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Token transaction history."
+    },
+    "/apks/{apkId}": {
+      "schema": "APKFile",
+      "description": "Metadata for APK files."
+    },
+    "/apk_versions/{versionId}": {
+      "schema": "APKVersion",
+      "description": "Version history for APK files."
+    },
+    "/notes/{noteId}": {
+      "schema": "Note",
+      "description": "User personal notes."
+    },
+    "/culture/{articleId}": {
+      "schema": "CultureArticle",
+      "description": "Articles on culture and environment."
+    },
+    "/questions/{questionId}": {
+      "schema": "Question",
+      "description": "Community Q&A questions."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders."
+    }
+  }
+}
